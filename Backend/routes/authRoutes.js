@@ -1,8 +1,8 @@
 import express from 'express';
 import { register, login, selectMentor } from '../controllers/authController.js';
 import { getAllUsers, verifyMentor, getMentors } from '../controllers/userController.js';
-import { protect } from '../middleware/authMiddleware.js';
-import { admin } from '../middleware/adminMiddleware.js';
+import { protect } from '../Middleware/authMiddleware.js';
+import { admin } from '../Middleware/adminMiddleware.js';
 
 const router = express.Router();
 
