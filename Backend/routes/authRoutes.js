@@ -1,16 +1,21 @@
 import express from 'express';
-import { register, login } from '../controllers/authController.js';
-import { getAllUsers, verifyMentor } from '../controllers/userController.js';
-import { protect } from '../Middleware/authMiddleware.js';
-import { admin } from '../Middleware/adminMiddleware.js';
+import { register, login, selectMentor } from '../controllers/authController.js';
+import { getAllUsers, verifyMentor, getMentors } from '../controllers/userController.js';
+import { protect } from '../middleware/authMiddleware.js';
+import { admin } from '../middleware/adminMiddleware.js';
 
 const router = express.Router();
 
-router.post('/register', register); // Public
-router.post('/login', login);       // Public
+// Public Routes
+router.post('/register', register);
+router.post('/login', login);
+router.get('/mentors', getMentors); // සියලුම මෙන්ටර්ලා බැලීමට
 
-// Admin පමණක් කළ හැකි දේ [cite: 8]
+// Protected Routes (Logged in users only)
+router.post('/select-mentor', protect, selectMentor); // මෙන්ටර් කෙනෙක් තෝරාගැනීමට
+
+// Admin Routes
 router.get('/users', protect, admin, getAllUsers);
-router.put('/verify/:id', protect, admin, verifyMentor);
+router.put('/verify-mentor/:id', protect, admin, verifyMentor);
 
 export default router;
