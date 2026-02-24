@@ -1,5 +1,5 @@
 import Resource from '../models/Resource.js';
-import * as Brevo from '@getbrevo/brevo';
+import { BrevoClient } from '@getbrevo/brevo';
 
 // --- (User) සියලුම Resources බැලීම ---
 export const getResources = async (req, res) => {
@@ -62,43 +62,41 @@ export const deleteResource = async (req, res) => {
 export const shareResourceViaEmail = async (req, res) => {
     try {
         const { resourceId, email } = req.body;
+        if (!resourceId || !email) {
+            return res.status(400).json({ message: "resourceId and email are required" });
+        }
         
         // 1. Resource එක සොයා ගැනීම
         const resource = await Resource.findById(resourceId);
         if (!resource) return res.status(404).json({ message: "Resource not found" });
 
         // --- Brevo Fix Start ---
-        // 1. API Client එක සකස් කිරීම
-        const defaultClient = Brevo.ApiClient.instance;
-        const apiKey = defaultClient.authentications['api-key'];
-        apiKey.apiKey = process.env.BREVO_API_KEY; // .env එකේ Key එක ඇති බව සහතික කරගන්න
+        const apiKey = process.env.BREVO_API_KEY;
+        if (!apiKey) {
+            return res.status(500).json({ message: "BREVO_API_KEY is not set" });
+        }
 
-        // 2. Transactional Email Instance එක සෑදීම (Constructor Fix)
-        const apiInstance = new Brevo.TransactionalEmailsApi();
+        const brevo = new BrevoClient({ apiKey });
 
-        // 3. Email දත්ත සැකසීම
-        const sendSmtpEmail = new Brevo.SendSmtpEmail();
-
-        sendSmtpEmail.subject = `Shared Resource: ${resource.title}`;
-        sendSmtpEmail.htmlContent = `
-            <html>
-                <body style="font-family: Arial, sans-serif;">
-                    <h2 style="color: #2c3e50;">${resource.title}</h2>
-                    <p><b>Category:</b> ${resource.category}</p>
-                    <div style="padding: 15px; background: #f9f9f9; border-left: 4px solid #3498db;">
-                        ${resource.content}
-                    </div>
-                    <br>
-                    ${resource.link ? `<a href="${resource.link}" style="padding: 10px 20px; background: #3498db; color: white; text-decoration: none; border-radius: 5px;">View Full Resource</a>` : ''}
-                    <hr>
-                    <p style="font-size: 12px; color: #7f8c8d;">Sent via Safety App Resources Management</p>
-                </body>
-            </html>`;
-        sendSmtpEmail.sender = { "name": "Safety App", "email": "saviduherath2003@gmail.com" };
-        sendSmtpEmail.to = [{ "email": email }];
-
-        // 4. Email එක යැවීම
-        await apiInstance.sendTransacEmail(sendSmtpEmail);
+        await brevo.transactionalEmails.sendTransacEmail({
+            subject: `Shared Resource: ${resource.title}`,
+            htmlContent: `
+                <html>
+                    <body style="font-family: Arial, sans-serif;">
+                        <h2 style="color: #2c3e50;">${resource.title}</h2>
+                        <p><b>Category:</b> ${resource.category}</p>
+                        <div style="padding: 15px; background: #f9f9f9; border-left: 4px solid #3498db;">
+                            ${resource.content}
+                        </div>
+                        <br>
+                        ${resource.link ? `<a href="${resource.link}" style="padding: 10px 20px; background: #3498db; color: white; text-decoration: none; border-radius: 5px;">View Full Resource</a>` : ''}
+                        <hr>
+                        <p style="font-size: 12px; color: #7f8c8d;">Sent via Safety App Resources Management</p>
+                    </body>
+                </html>`,
+            sender: { name: "Safety App", email: "saviduherath2003@gmail.com" },
+            to: [{ email }],
+        });
         // --- Brevo Fix End ---
 
         res.json({ message: "Resource shared to your email successfully!" });
