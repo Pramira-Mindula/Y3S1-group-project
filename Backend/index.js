@@ -6,6 +6,7 @@ import authRoutes from './routes/authRoutes.js';
 import resourceRoutes from './routes/resourceRoutes.js'; // Member 3 (අලුතින් එකතු කළා)  
 import reportRoutes from './routes/reportRoutes.js'; // Member 4 (අලුතින් එකතු කළා) 
 import postRoutes from './routes/postRoutes.js';
+import chatRoutes from './routes/chat.js';
 
 
 
@@ -28,9 +29,11 @@ app.use('/api/resources', resourceRoutes);
 app.use('/api/safety',reportRoutes);
 
 
-
+//Community-forum
 
 app.use('/api/posts', postRoutes);
+
+app.use('/api/chatbot', chatRoutes);
 
 
 
