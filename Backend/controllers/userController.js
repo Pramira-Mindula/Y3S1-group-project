@@ -33,3 +33,23 @@ export const getMentors = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+// User කෙනෙක් හෝ Mentor කෙනෙක්ව පද්ධතියෙන් ඉවත් කිරීම (Admin Only)
+export const deleteUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Admin කෙනෙක්ට තවත් Admin කෙනෙක්ව Delete කරන්න බැරි වෙන්න මේ logic එක දාන්න පුළුවන් (Optional)
+        if (user.role === 'admin') {
+            return res.status(403).json({ message: "Admin accounts cannot be deleted" });
+        }
+
+        await User.findByIdAndDelete(req.params.id);
+        res.json({ message: "User deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};

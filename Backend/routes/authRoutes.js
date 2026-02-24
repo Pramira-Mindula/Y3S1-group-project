@@ -1,8 +1,9 @@
 import express from 'express';
 import { register, login, selectMentor } from '../controllers/authController.js';
 import { getAllUsers, verifyMentor, getMentors } from '../controllers/userController.js';
-import { protect } from '../middleware/authMiddleware.js';
-import { admin } from '../middleware/adminMiddleware.js';
+import { protect } from '../Middleware/authMiddleware.js';
+import { admin } from '../Middleware/adminMiddleware.js';
+import { deleteUser } from '../controllers/userController.js';
 
 const router = express.Router();
 
@@ -10,6 +11,7 @@ const router = express.Router();
 router.post('/register', register);
 router.post('/login', login);
 router.get('/mentors', getMentors); // සියලුම මෙන්ටර්ලා බැලීමට
+router.delete('/user/:id', protect, admin, deleteUser);
 
 // Protected Routes (Logged in users only)
 router.post('/select-mentor', protect, selectMentor); // මෙන්ටර් කෙනෙක් තෝරාගැනීමට
