@@ -4,24 +4,16 @@ const userSchema = new mongoose.Schema({
     username: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    
-    resetOTP: { type: String },
-    resetOTPExpiry: { type: Date },
     role: { 
         type: String, 
         enum: ['user', 'mentor', 'admin'], 
         default: 'user' 
     },
-    // Mentor කෙනෙක් නම් පමණක් අවශ්‍ය විස්තර
+    // Mentor කෙනෙක් නම් පමණක් මේවා අවශ්‍ය වේ
     mentorDetails: {
-        expertise: { type: String }, 
+        expertise: { type: String }, // e.g., Legal, Psychology
         bio: { type: String },
-        isVerified: { type: Boolean, default: false }
-    },
-    // User කෙනෙක් Mentor කෙනෙක්ව සම්බන්ධ කරගැනීම (Relationship)
-    myMentor: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        isVerified: { type: Boolean, default: false } // Admin විසින් අනුමත කළ යුතුය
     }
 }, { timestamps: true });
 

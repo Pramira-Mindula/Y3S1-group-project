@@ -1,8 +1,8 @@
 import express from 'express';
 import { createReport, getAllReports, resolveReport } from '../controllers/reportController.js';
 import { getWomenSafetyNews } from '../controllers/externalController.js';
-import { protect } from '../middleware/authMiddleware.js';
-import { admin } from '../middleware/adminMiddleware.js';
+import { protect } from '../Middleware/authMiddleware.js';
+import { admin } from '../Middleware/adminMiddleware.js';
 
 const router = express.Router();
 
