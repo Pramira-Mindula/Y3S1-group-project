@@ -7,6 +7,8 @@ import resourceRoutes from './routes/resourceRoutes.js'; // Member 3 (අලු�
 import reportRoutes from './routes/reportRoutes.js'; // Member 4 (අලුතින් එකතු කළා) 
 import postRoutes from './routes/postRoutes.js';
 import chatRoutes from './routes/chat.js';
+import appointmentRoutes from './routes/appointmentRoutes.js';
+
 
 
 
@@ -20,6 +22,7 @@ app.use(express.json());
 
 // Member 1: User & Auth
 app.use('/api/auth', authRoutes);
+app.use('/api/appointments', appointmentRoutes);
 
 // Member 3: Resource Library
 app.use('/api/resources', resourceRoutes);
