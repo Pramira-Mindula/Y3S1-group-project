@@ -5,7 +5,7 @@ export const createPost = async (req, res) => {
     try {
         const { title, description, category } = req.body;
         const newPost = await Post.create({
-            user: req.user.id, // Auth middleware එකෙන් ලැබෙන ID එක
+            user: req.user.id, // Assuming req.user is set by auth middleware and contains the user's ID
             title,
             description,
             category
@@ -16,12 +16,12 @@ export const createPost = async (req, res) => {
     }
 };
 
-// 2. Get All Posts (පෝස්ට් දැමූ අයගේ විස්තර සමඟ)
+// 2. Get All Posts
 export const getPosts = async (req, res) => {
     try {
         const posts = await Post.find()
-            .populate('user', 'username role') // පෝස්ට් එක දැමූ පුද්ගලයාගේ විස්තර
-            .populate('comments.user', 'username role mentorDetails') // කොමෙන්ට් කළ අයගේ විස්තර
+            .populate('user', 'username role') // Populating user details for each post
+            .populate('comments.user', 'username role mentorDetails') // Populating comment authors' details
             .sort({ createdAt: -1 });
         res.json(posts);
     } catch (error) {

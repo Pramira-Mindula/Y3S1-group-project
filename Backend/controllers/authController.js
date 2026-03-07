@@ -5,7 +5,7 @@ import * as Brevo from '@getbrevo/brevo';
 import nodemailer from 'nodemailer';
 
 // ---------------------------------------------------------
-// 1. පරිශීලක ලියාපදිංචිය (Register)
+// 1. User Registration (Register)
 // ---------------------------------------------------------
 export const register = async (req, res) => {
     try {
@@ -31,7 +31,7 @@ export const register = async (req, res) => {
 };
 
 // ---------------------------------------------------------
-// 2. ඇතුළුවීම (Login)
+// 2.  (Login)
 // ---------------------------------------------------------
 export const login = async (req, res) => {
     try {
@@ -57,7 +57,7 @@ export const login = async (req, res) => {
 };
 
 // ---------------------------------------------------------
-// 3. මෙන්ටර් කෙනෙකු තෝරාගැනීම
+// 3. Choosing a Mentor (Select Mentor)
 // ---------------------------------------------------------
 export const selectMentor = async (req, res) => {
     try {
@@ -81,7 +81,7 @@ export const selectMentor = async (req, res) => {
 };
 
 // ---------------------------------------------------------
-// 4. මුරපදය අමතක වූ විට OTP යැවීම (Forgot Password)
+// 4. Forgot Password (Send OTP & Reset Password)
 // ---------------------------------------------------------
 export const forgotPassword = async (req, res) => {
     try {
@@ -120,14 +120,14 @@ export const forgotPassword = async (req, res) => {
                 throw new Error("Brevo API key authentication configuration missing");
             }
 
-            // මෙතන අනිවාර්යයෙන්ම 'xkeysib-' වලින් පටන් ගන්නා API Key එක තිබිය යුතුයි
+            
             apiKeyAuth.apiKey = brevoApiKey;
             sendBrevoEmail = (payload) => apiInstance.sendTransacEmail(payload);
         } else {
             throw new Error("Unsupported Brevo SDK version in '@getbrevo/brevo'");
         }
 
-        // Email දත්ත
+        // Email data structure for Brevo
         const sendSmtpEmail = {
             sender: { name: "Safety App", email: "saviduherath2003@gmail.com" },
             to: [{ email: user.email }],
@@ -135,7 +135,7 @@ export const forgotPassword = async (req, res) => {
             htmlContent: `<html><body><h3>Your OTP is: <b>${otp}</b></h3></body></html>`
         };
 
-        // Email එක යැවීම
+        // Email sending via Brevo API
         await sendBrevoEmail(sendSmtpEmail);
         
         res.json({ message: "OTP sent successfully via Brevo API!" });
@@ -146,7 +146,7 @@ export const forgotPassword = async (req, res) => {
     }
 };
 // ---------------------------------------------------------
-// 5. මුරපදය අලුත් කිරීම (Reset Password)
+// 5. Reset Password (Using OTP)
 // ---------------------------------------------------------
 export const resetPassword = async (req, res) => {
     try {

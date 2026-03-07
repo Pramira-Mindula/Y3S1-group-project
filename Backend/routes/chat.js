@@ -1,7 +1,7 @@
 import express from 'express';
 import { askChatbot } from '../controllers/chatController.js';
 // Removed the { } because it's likely a default export
-import { protect } from '../middleware/authMiddleware.js';
+import { protect } from '../Middleware/authMiddleware.js';
 
 const router = express.Router();
 

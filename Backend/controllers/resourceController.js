@@ -1,7 +1,7 @@
 import Resource from '../models/Resource.js';
 import { BrevoClient } from '@getbrevo/brevo';
 
-// --- (User) සියලුම Resources බැලීම ---
+// 1. Get Resources with filtering, searching, and pagination
 export const getResources = async (req, res) => {
     try {
         const { category, search, page = 1, limit = 10 } = req.query; 
@@ -27,7 +27,7 @@ export const getResources = async (req, res) => {
     }
 };
 
-// --- (Admin) අලුත් Resource එකක් ඇතුළත් කිරීම ---
+// --- (Admin) Entering a new Resource ---
 export const createResource = async (req, res) => {
     try {
         const { title, category, content, link } = req.body;
@@ -38,7 +38,7 @@ export const createResource = async (req, res) => {
     }
 };
 
-// --- (Admin) Resource එකක් Update කිරීම ---
+// --- (Admin) Updateing a Resource ---
 export const updateResource = async (req, res) => {
     try {
         const updatedResource = await Resource.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -48,7 +48,7 @@ export const updateResource = async (req, res) => {
     }
 };
 
-// --- (Admin) Resource එකක් මකා දැමීම ---
+// --- (Admin) Deleting a Resource ---
 export const deleteResource = async (req, res) => {
     try {
         await Resource.findByIdAndDelete(req.params.id);
@@ -58,7 +58,7 @@ export const deleteResource = async (req, res) => {
     }
 };
 
-// --- (Third-Party API) Resource එක Email එකට යැවීම ---
+// --- Sharing a Resource via Email ---
 export const shareResourceViaEmail = async (req, res) => {
     try {
         const { resourceId, email } = req.body;
@@ -66,7 +66,7 @@ export const shareResourceViaEmail = async (req, res) => {
             return res.status(400).json({ message: "resourceId and email are required" });
         }
         
-        // 1. Resource එක සොයා ගැනීම
+        // 1. Find the resource by ID
         const resource = await Resource.findById(resourceId);
         if (!resource) return res.status(404).json({ message: "Resource not found" });
 

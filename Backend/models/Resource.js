@@ -21,19 +21,19 @@ const resourceSchema = new mongoose.Schema({
     link: { 
         type: String, 
         trim: true,
-        // URL එකක්දැයි පරීක්ෂා කිරීමට සරල validation එකක් (optional)
+        // URL A simple validation (optional) to check if one is one
         match: [/^https?:\/\/.+/, 'Please enter a valid URL']
     }, 
     author: { 
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'User',
-        required: true // ලිපියක් දාන කෙනෙක් අනිවාර්යයෙන් ඉන්න ඕන නිසා
+        required: true 
     } 
 }, { 
-    timestamps: true // මෙයින් createdAt සහ updatedAt ස්වයංක්‍රීයව සෑදේ
+    timestamps: true // Of this, the createdAt and the upledAt are automatically made
 });
 
-// Search පහසුකම වේගවත් කිරීමට Title එකට Index එකක් එක් කිරීම
+// Adding an index to the title to speed up the Search facility
 resourceSchema.index({ title: 'text' });
 
 export default mongoose.model('Resource', resourceSchema);

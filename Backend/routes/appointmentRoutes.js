@@ -9,7 +9,7 @@ import { protect } from '../Middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// සියලුම routes සඳහා ලොග් වීම අනිවාර්යයි
+
 router.use(protect);
 
 router.post('/', createAppointment);

@@ -6,7 +6,7 @@ export const protect = async (req, res, next) => {
         try {
             token = req.headers.authorization.split(' ')[1];
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            req.user = decoded; // දැන් ඕනෑම තැනක req.user.id ලෙස user තොරතුරු ගත හැක
+            req.user = decoded; // You can take the user information as req.user.id anywhere now
             next();
         } catch (error) {
             res.status(401).json({ message: "Not authorized, token failed" });

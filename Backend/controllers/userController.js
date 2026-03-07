@@ -1,6 +1,6 @@
 import User from '../models/User.js';
 
-// 1. සියලුම පාවිච්චි කරන්නන් බැලීම (Admin Only)
+// 1. Get all users (Admin)
 export const getAllUsers = async (req, res) => {
     try {
         const users = await User.find().select('-password').populate('myMentor', 'username mentorDetails');
@@ -10,7 +10,7 @@ export const getAllUsers = async (req, res) => {
     }
 };
 
-// 2. Mentor කෙනෙක්ව Verify කිරීම (Admin Only)
+// 2. Verify a mentor (Admin)
 export const verifyMentor = async (req, res) => {
     try {
         const user = await User.findByIdAndUpdate(
@@ -24,7 +24,7 @@ export const verifyMentor = async (req, res) => {
     }
 };
 
-// 3. පද්ධතියේ සිටින සියලුම Verified Mentors පෙන්වීම (Public/User)
+// 3. Get all verified mentors (For users to select from)
 export const getMentors = async (req, res) => {
     try {
         const mentors = await User.find({ role: 'mentor', 'mentorDetails.isVerified': true }).select('username mentorDetails');
@@ -33,7 +33,7 @@ export const getMentors = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-// User කෙනෙක් හෝ Mentor කෙනෙක්ව පද්ධතියෙන් ඉවත් කිරීම (Admin Only)
+// 4. Delete a user (Admin)
 export const deleteUser = async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
@@ -42,7 +42,7 @@ export const deleteUser = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
-        // Admin කෙනෙක්ට තවත් Admin කෙනෙක්ව Delete කරන්න බැරි වෙන්න මේ logic එක දාන්න පුළුවන් (Optional)
+        // Prevent deletion of admin accounts
         if (user.role === 'admin') {
             return res.status(403).json({ message: "Admin accounts cannot be deleted" });
         }

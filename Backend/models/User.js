@@ -12,13 +12,13 @@ const userSchema = new mongoose.Schema({
         enum: ['user', 'mentor', 'admin'], 
         default: 'user' 
     },
-    // Mentor කෙනෙක් නම් පමණක් අවශ්‍ය විස්තර
+    // Details only needed if a center is a mentor
     mentorDetails: {
         expertise: { type: String }, 
         bio: { type: String },
         isVerified: { type: Boolean, default: false }
     },
-    // User කෙනෙක් Mentor කෙනෙක්ව සම්බන්ධ කරගැනීම (Relationship)
+    // Contacting a user (Releaseship)
     myMentor: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'

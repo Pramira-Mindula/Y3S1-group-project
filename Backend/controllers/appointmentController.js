@@ -56,7 +56,7 @@ export const updateAppointmentStatus = async (req, res) => {
         res.json({ message: `Status updated to ${status}`, appointment });
     } catch (error) {
         console.error("Brevo Error Detail:", error);
-        // මෙතැනදී error එක ආවත් status එක update වුණ බව පෙන්වනවා
+       
         res.status(500).json({ 
             message: "Database updated, but email sending failed", 
             error: error.message 

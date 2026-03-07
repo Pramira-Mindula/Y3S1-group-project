@@ -19,7 +19,7 @@ const reportSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-// Business Logic: එකම User ට එකම Post එක දෙපාරක් Report කළ නොහැක
+// Business Logic: The same user cannot replicate the same post two ways
 reportSchema.index({ postId: 1, reportedBy: 1 }, { unique: true });
 
 export default mongoose.model('Report', reportSchema);

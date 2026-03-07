@@ -3,8 +3,8 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import connectDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
-import resourceRoutes from './routes/resourceRoutes.js'; // Member 3 (අලුතින් එකතු කළා)  
-import reportRoutes from './routes/reportRoutes.js'; // Member 4 (අලුතින් එකතු කළා) 
+import resourceRoutes from './routes/resourceRoutes.js'; // Member 3 
+import reportRoutes from './routes/reportRoutes.js'; // Member 4 
 import postRoutes from './routes/postRoutes.js';
 import chatRoutes from './routes/chat.js';
 import appointmentRoutes from './routes/appointmentRoutes.js';
@@ -28,7 +28,7 @@ app.use('/api/appointments', appointmentRoutes);
 app.use('/api/resources', resourceRoutes);
 
 
-// ... අනෙක් imports
+// ... member 4 imports
 app.use('/api/safety',reportRoutes);
 
 

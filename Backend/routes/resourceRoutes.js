@@ -5,10 +5,10 @@ import { admin } from '../Middleware/adminMiddleware.js';
 
 const router = express.Router();
 
-router.get('/', getResources); // ඕනෑම කෙනෙකුට බැලිය හැක [cite: 38]
-router.post('/', protect, admin, createResource); // Admin පමණි [cite: 42, 45]
-router.put('/:id', protect, admin, updateResource); // Admin පමණි [cite: 43]
-router.delete('/:id', protect, admin, deleteResource); // Admin පමණි [cite: 44]
+router.get('/', getResources); 
+router.post('/', protect, admin, createResource); 
+router.put('/:id', protect, admin, updateResource); 
+router.delete('/:id', protect, admin, deleteResource); 
 
 // Third-party API Route
 router.post('/share', shareResourceViaEmail);

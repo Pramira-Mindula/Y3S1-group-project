@@ -10,13 +10,13 @@ const router = express.Router();
 // Public Routes
 router.post('/register', register);
 router.post('/login', login);
-router.get('/mentors', getMentors); // සියලුම මෙන්ටර්ලා බැලීමට
+router.get('/mentors', getMentors); 
 router.delete('/user/:id', protect, admin, deleteUser);
 router.post('/forgot-password', forgotPassword);
 router.post('/reset-password', resetPassword);
 
 // Protected Routes (Logged in users only)
-router.post('/select-mentor', protect, selectMentor); // මෙන්ටර් කෙනෙක් තෝරාගැනීමට
+router.post('/select-mentor', protect, selectMentor); 
 
 // Admin Routes
 router.get('/users', protect, admin, getAllUsers);
