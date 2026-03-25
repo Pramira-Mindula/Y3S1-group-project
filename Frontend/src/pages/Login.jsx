@@ -1,6 +1,6 @@
 import React, { useState} from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
 const Login = () => {
@@ -92,9 +92,11 @@ const Login = () => {
 
           <p className="text-sm text-gray-600 text-center mt-4">
             Don't have an account?{' '}
-            <span className="text-blue-600 hover:text-blue-800 font-medium cursor-pointer">
-              Sign up
-            </span>
+            <Link to="/register">
+              <span className="text-blue-600 hover:text-blue-800 font-medium cursor-pointer">
+                Sign up
+              </span>
+            </Link>
           </p>
         </form>
       </div>
