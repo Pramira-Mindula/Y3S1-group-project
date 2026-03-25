@@ -1,9 +1,8 @@
 import express from 'express';
-import { register, login, selectMentor, forgotPassword, resetPassword } from '../controllers/authController.js';
-import { getAllUsers, verifyMentor, getMentors } from '../controllers/userController.js';
+import { register, login, selectMentor, forgotPassword, resetPassword,deleteUser,getAllUsers, verifyMentor, getMentors } from '../controllers/authController.js';
 import { protect } from '../Middleware/authMiddleware.js';
 import { admin } from '../Middleware/adminMiddleware.js';
-import { deleteUser } from '../controllers/userController.js';
+
 
 const router = express.Router();
 
@@ -11,7 +10,7 @@ const router = express.Router();
 router.post('/register', register);
 router.post('/login', login);
 router.get('/mentors', getMentors); 
-router.delete('/user/:id', protect, admin, deleteUser);
+
 router.post('/forgot-password', forgotPassword);
 router.post('/reset-password', resetPassword);
 
@@ -21,5 +20,6 @@ router.post('/select-mentor', protect, selectMentor);
 // Admin Routes
 router.get('/users', protect, admin, getAllUsers);
 router.put('/verify-mentor/:id', protect, admin, verifyMentor);
+router.delete('/user/:id', protect, admin, deleteUser);
 
 export default router;
