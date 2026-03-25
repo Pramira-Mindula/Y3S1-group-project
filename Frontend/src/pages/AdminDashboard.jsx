@@ -62,7 +62,7 @@ export default function AdminDashboard() {
 
               {/* /admin/users වලට ආවාම පෙන්වන එක */}
               <Route path="/users" element={
-               <AdminUserManagement />
+               <AdminUserManagement/>
               } />
             </Routes>
 
