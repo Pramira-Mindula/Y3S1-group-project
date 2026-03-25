@@ -26,6 +26,16 @@ export const register = async (req, res) => {
 
         res.status(201).json({ message: "User registered successfully!" });
     } catch (error) {
+        // Return 400 for bad user input (validation) instead of masking it as a 500.
+        if (error?.name === 'ValidationError') {
+            return res.status(400).json({ message: error.message });
+        }
+
+        // Unique email violation (race condition or missing pre-check).
+        if (error?.code === 11000) {
+            return res.status(400).json({ message: "Email already exists" });
+        }
+
         res.status(500).json({ message: error.message });
     }
 };
@@ -38,17 +48,33 @@ export const login = async (req, res) => {
         const { email, password } = req.body;
         const user = await User.findOne({ email });
 
+        // 1. User කෙනෙක් ඉන්නවද සහ Password එක හරිද කියලා මුලින්ම බලනවා
         if (user && (await bcrypt.compare(password, user.password))) {
+            
+            // 2. අලුත් කොටස: User 'mentor' කෙනෙක් නම් විතරක් Verify වෙලාද බලනවා
+            if (user.role === 'mentor') {
+                // mentorDetails ඇතුලේ isVerified එක false නම් (හෝ නැත්නම්), ලොගින් එක නවත්තනවා
+                if (!user.mentorDetails?.isVerified) {
+                    return res.status(403).json({ 
+                        message: "Login failed: Your mentor account is still pending admin approval." 
+                    });
+                }
+            }
+
+            // 3. User සාමාන්‍ය කෙනෙක් නම්, හෝ Approve වෙච්ච Mentor කෙනෙක් නම් Token එක හදනවා
             const token = jwt.sign(
                 { id: user._id, role: user.role }, 
                 process.env.JWT_SECRET, 
                 { expiresIn: '1d' }
             );
+            
             res.json({ 
                 token, 
                 user: { id: user._id, username: user.username, role: user.role } 
             });
+            
         } else {
+            // Email එක හරි Password එක හරි වැරදි නම්
             res.status(401).json({ message: "Invalid credentials" });
         }
     } catch (error) {
