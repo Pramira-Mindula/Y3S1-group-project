@@ -28,28 +28,35 @@ export const getAllReports = async (req, res) => {
     }
 };
 
-// Resolve or Dismiss a report (Admin)
+//Update report status (Admin)
 export const resolveReport = async (req, res) => {
     try {
-        const { status } = req.body.status;
+        const { status } = req.body;
 
         // Validate status
-        if (!['Resolved', 'Dismissed'].includes(status)) {
-            return res.status(400).json({ message: 'Invalid status. Must be "Resolved" or "Dismissed".' });
+        const allowedStatus = ['Pending', 'Resolved', 'Dismissed'];
+
+        if (!allowedStatus.includes(status)) {
+            return res.status(400).json({
+                message: 'Invalid status. Must be Pending, Resolved, or Dismissed.'
+            });
         }
 
         const report = await Report.findByIdAndUpdate(
             req.params.id,
             { status },
-            { new: true } // return updated document
+            { new: true }
         );
 
         if (!report) {
             return res.status(404).json({ message: 'Report not found' });
         }
 
-        // Send exact status in response
-        res.json({ message: `Report marked as ${report.status}`, report });
+        res.json({
+            message: `Report marked as ${report.status}`,
+            report
+        });
+
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
