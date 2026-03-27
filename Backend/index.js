@@ -30,7 +30,7 @@ app.use('/api/resources', resourceRoutes);
 
 // ... member 4 imports
 app.use('/api/safety',reportRoutes);
-
+app.use('/api/news', reportRoutes)
 
 //Community-forum
 
