@@ -28,6 +28,25 @@ export const getAllReports = async (req, res) => {
     }
 };
 
+// Get report by ID (Admin)
+export const getReportById = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const report = await Report.findById(id)
+            .populate('postId')
+            .populate('reportedBy', 'username email');
+
+        if (!report) {
+            return res.status(404).json({ message: "Report not found" });
+        }
+
+        res.json(report);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 //Update report status (Admin)
 export const resolveReport = async (req, res) => {
     try {
