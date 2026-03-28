@@ -16,6 +16,13 @@ const reportSchema = new mongoose.Schema({
         type: String, 
         enum: ['Pending', 'Resolved', 'Dismissed'], 
         default: 'Pending' 
+    },
+    actionComment: {
+        type: String,
+    },
+    actionBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     }
 }, { timestamps: true });
 

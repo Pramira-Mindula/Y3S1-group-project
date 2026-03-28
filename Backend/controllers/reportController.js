@@ -35,7 +35,8 @@ export const getReportById = async (req, res) => {
 
         const report = await Report.findById(id)
             .populate('postId')
-            .populate('reportedBy', 'username email');
+            .populate('reportedBy', 'username email')
+            .populate('actionBy', 'username email');
 
         if (!report) {
             return res.status(404).json({ message: "Report not found" });
@@ -47,10 +48,10 @@ export const getReportById = async (req, res) => {
     }
 };
 
-//Update report status (Admin)
+// Update report status (Admin)
 export const resolveReport = async (req, res) => {
     try {
-        const { status } = req.body;
+        const { status, actionComment } = req.body;
 
         // Validate status
         const allowedStatus = ['Pending', 'Resolved', 'Dismissed'];
@@ -61,11 +62,27 @@ export const resolveReport = async (req, res) => {
             });
         }
 
+        // Optional: require comment when resolving/dismissing
+        if ((status === 'Resolved' || status === 'Dismissed') && !actionComment) {
+            return res.status(400).json({
+                message: 'Action comment is required when resolving or dismissing a report.'
+            });
+        }
+
+        const updatedData = {
+            status,
+            actionComment,
+            actionBy: req.user.id
+        };
+
         const report = await Report.findByIdAndUpdate(
             req.params.id,
-            { status },
+            updatedData,
             { new: true }
-        );
+        )
+        .populate('postId')
+        .populate('reportedBy', 'username email')
+        .populate('actionBy', 'username email');
 
         if (!report) {
             return res.status(404).json({ message: 'Report not found' });
