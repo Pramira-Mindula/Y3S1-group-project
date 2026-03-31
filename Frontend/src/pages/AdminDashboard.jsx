@@ -23,7 +23,7 @@ export default function AdminDashboard() {
         
         <nav className="flex-1 p-4 space-y-2">
           {/* මෙතන /admin කියලා ලින්ක් හැදුවා */}
-          <Link to="/admin" className="block px-4 py-2 rounded hover:bg-gray-700 bg-gray-700/50">
+          <Link to="/admin" className="block px-4 py-2 rounded hover:bg-gray-700">
             Dashboard Home
           </Link>
           

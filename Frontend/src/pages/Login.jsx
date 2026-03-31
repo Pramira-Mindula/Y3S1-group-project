@@ -27,15 +27,14 @@ const Login = () => {
         if(response.data.user.role === "admin") {
           navigate("/admin"); // Redirect to admin dashboard
         }else if (response.data.user.role === "mentor") {
-          navigate("/mentor/dashboard"); // Redirect to mentor dashboard
+          navigate("/mentor"); // Redirect to mentor dashboard
         }else{
-          navigate("/"); // Redirect to user page
+          navigate("/findmentor"); // Redirect to user page
         }
       })
       .catch(error => {
-        
-        toast.error(error.response.data.message || "Login failed. Please try again."); // Show error toast
-        
+        const errorMessage = error.response?.data?.message || "Cannot connect to server. Check backend and API URL.";
+        toast.error(errorMessage); // Show a safe error even for network failures
       });
   };
   

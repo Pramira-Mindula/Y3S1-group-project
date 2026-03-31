@@ -1,5 +1,5 @@
 import express from 'express';
-import { register, login, selectMentor, forgotPassword, resetPassword,deleteUser,getAllUsers, verifyMentor, getMentors } from '../controllers/authController.js';
+import { register, login, selectMentor, forgotPassword, resetPassword,deleteUser,getAllUsers, verifyMentor, getMentors, getMyProfile, updateMyProfile } from '../controllers/authController.js';
 import { protect } from '../Middleware/authMiddleware.js';
 import { admin } from '../Middleware/adminMiddleware.js';
 
@@ -16,6 +16,8 @@ router.post('/reset-password', resetPassword);
 
 // Protected Routes (Logged in users only)
 router.post('/select-mentor', protect, selectMentor); 
+router.get('/profile', protect, getMyProfile);
+router.put('/profile', protect, updateMyProfile);
 
 // Admin Routes
 router.get('/users', protect, admin, getAllUsers);

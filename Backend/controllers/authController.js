@@ -250,3 +250,45 @@ export const deleteUser = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+// 5. Get logged-in user profile
+export const getMyProfile = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).select('-password');
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// 6. Update logged-in user profile
+export const updateMyProfile = async (req, res) => {
+    try {
+        const { username, phone, mentorDetails } = req.body;
+        const user = await User.findById(req.user.id);
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        if (username !== undefined) user.username = username;
+        if (phone !== undefined) user.phone = phone;
+
+        if (mentorDetails && typeof mentorDetails === 'object') {
+            user.mentorDetails = {
+                ...user.mentorDetails,
+                ...mentorDetails
+            };
+        }
+
+        await user.save();
+        const safeUser = user.toObject();
+        delete safeUser.password;
+        res.json({ message: "Profile updated successfully", user: safeUser });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};

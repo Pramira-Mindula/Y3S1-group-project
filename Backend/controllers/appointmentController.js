@@ -5,7 +5,20 @@ import User from '../models/User.js';
 export const createAppointment = async (req, res) => {
     try {
         const { mentorId, date, reason } = req.body;
-        const userId = req.user.id; 
+        const userId = req.user.id;
+
+        // Mentor creates an open availability slot from Mentor Dashboard
+        if (req.user.role === 'mentor') {
+            const newSlot = await Appointment.create({
+                userId,
+                mentorId: userId,
+                date,
+                reason: reason || 'Mentor availability slot',
+                status: 'Available'
+            });
+
+            return res.status(201).json(newSlot);
+        }
 
         const mentor = await User.findById(mentorId);
         if (!mentor || mentor.role !== 'mentor') {
@@ -13,7 +26,11 @@ export const createAppointment = async (req, res) => {
         }
 
         const newAppointment = await Appointment.create({
-            userId, mentorId, date, reason
+            userId,
+            mentorId,
+            date,
+            reason,
+            status: 'Booked'
         });
 
         res.status(201).json(newAppointment);
@@ -71,5 +88,45 @@ export const deleteAppointment = async (req, res) => {
         res.json({ message: "Appointment cancelled successfully" });
     } catch (error) {
         res.status(400).json({ message: error.message });
+    }
+};
+
+// READ: Get Available Slots for a specific Mentor (Public/Mentee access)
+export const getAvailableSlotsForMentor = async (req, res) => {
+    try {
+        const { mentorId } = req.params;
+        // Find appointments for this mentor where status is exactly 'Available'
+        const slots = await Appointment.find({ mentorId, status: 'Available' })
+            .sort({ date: 1 }); // Sort by date ascending
+
+        res.json(slots);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// UPDATE: Book an existing available slot
+export const bookAvailableSlot = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { reason } = req.body;
+
+        const slot = await Appointment.findById(id);
+        if (!slot) {
+            return res.status(404).json({ message: 'Slot not found' });
+        }
+
+        if (slot.status !== 'Available') {
+            return res.status(400).json({ message: 'This slot is no longer available' });
+        }
+
+        slot.userId = req.user.id;
+        slot.reason = reason || 'Mentorship session';
+        slot.status = 'Booked';
+
+        const updatedSlot = await slot.save();
+        return res.json(updatedSlot);
+    } catch (error) {
+        return res.status(500).json({ message: error.message });
     }
 };
