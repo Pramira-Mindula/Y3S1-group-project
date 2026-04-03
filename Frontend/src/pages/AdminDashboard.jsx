@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, Routes, Route, useNavigate } from 'react-router-dom';
 import AdminUserManagement from './admin/AdminUserManagement';
 import AdminReportManagement from './admin/AdminReportManagement';
+import AdminResourceManager from './admin/AdminResourceManager';
 // import AdminMentorAdd from './AdminMentorAdd'; // 💡 ඔයා තාම මේ ෆයිල් එක හැදුවේ නැත්නම් මේක මෙහෙම Comment කරලා තියන්න
 
 export default function AdminDashboard() {
@@ -35,6 +36,10 @@ export default function AdminDashboard() {
             Report Management
           </Link>
 
+          <Link to="/admin/resources" className="block px-4 py-2 rounded hover:bg-gray-700">
+            Resource Management
+          </Link>
+
           
         </nav>
 
@@ -56,23 +61,26 @@ export default function AdminDashboard() {
             {/* Nested Routes */}
             <Routes>
               {/* /admin වලට ආවාම පෙන්වන එක */}
-              <Route path="/" element={
+              <Route index element={
                 <div>
                   <h2 className="text-2xl font-bold mb-4">Orders / Home Dashboard</h2>
                   <div className="bg-white p-6 rounded shadow">Welcome to the main dashboard!</div>
                 </div>
               } />
 
-              
-
               {/* /admin/users වලට ආවාම පෙන්වන එක */}
-              <Route path="/users" element={
+              <Route path="users" element={
                <AdminUserManagement/>
               } />
 
               {/* All Reports */}
-              <Route path="/reports" element={
+              <Route path="reports" element={
                 <AdminReportManagement/>
+              }/>
+              
+              {/* Resource Management */}
+              <Route path="resources" element={
+                <AdminResourceManager/>   
               }/>
 
             </Routes>

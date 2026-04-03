@@ -7,6 +7,7 @@ import AdminDashboard from './pages/adminDashboard';
 import Register from './pages/Register';
 import MentorDashboard from './pages/mentor/MentorDashboard';
 import FindMentor from './pages/FindMentor';
+import ResourceLibrary from './pages/ResourceLibrary';
 
 
 
@@ -24,6 +25,7 @@ function App() {
              <Route path="/admin/*" element={<AdminDashboard />} />
              <Route path='/mentor/*' element={<MentorDashboard />} />
              <Route path='/findmentor' element={<FindMentor />} />
+             <Route path='/resource' element={<ResourceLibrary />} />
              
         </Routes>
         
