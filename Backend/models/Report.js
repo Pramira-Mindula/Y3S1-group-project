@@ -16,10 +16,17 @@ const reportSchema = new mongoose.Schema({
         type: String, 
         enum: ['Pending', 'Resolved', 'Dismissed'], 
         default: 'Pending' 
+    },
+    actionComment: {
+        type: String,
+    },
+    actionBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
     }
 }, { timestamps: true });
 
-// Business Logic: The same user cannot replicate the same post two ways
+// same user cannot replicate the same post two ways
 reportSchema.index({ postId: 1, reportedBy: 1 }, { unique: true });
 
 export default mongoose.model('Report', reportSchema);

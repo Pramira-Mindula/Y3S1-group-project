@@ -196,3 +196,99 @@ export const resetPassword = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+// 1. Get all users (Admin)
+export const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find().select('-password').populate('myMentor', 'username mentorDetails');
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// 2. Verify a mentor (Admin)
+export const verifyMentor = async (req, res) => {
+    try {
+        const user = await User.findByIdAndUpdate(
+            req.params.id, 
+            { 'mentorDetails.isVerified': true }, 
+            { new: true }
+        );
+        res.json({ message: "Mentor verified", user });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// 3. Get all verified mentors (For users to select from)
+export const getMentors = async (req, res) => {
+    try {
+        const mentors = await User.find({ role: 'mentor', 'mentorDetails.isVerified': true }).select('username mentorDetails');
+        res.json(mentors);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+// 4. Delete a user (Admin)
+export const deleteUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Prevent deletion of admin accounts
+        if (user.role === 'admin') {
+            return res.status(403).json({ message: "Admin accounts cannot be deleted" });
+        }
+
+        await User.findByIdAndDelete(req.params.id);
+        res.json({ message: "User deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// 5. Get logged-in user profile
+export const getMyProfile = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id).select('-password');
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// 6. Update logged-in user profile
+export const updateMyProfile = async (req, res) => {
+    try {
+        const { username, phone, mentorDetails } = req.body;
+        const user = await User.findById(req.user.id);
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        if (username !== undefined) user.username = username;
+        if (phone !== undefined) user.phone = phone;
+
+        if (mentorDetails && typeof mentorDetails === 'object') {
+            user.mentorDetails = {
+                ...user.mentorDetails,
+                ...mentorDetails
+            };
+        }
+
+        await user.save();
+        const safeUser = user.toObject();
+        delete safeUser.password;
+        res.json({ message: "Profile updated successfully", user: safeUser });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};

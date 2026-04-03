@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, Routes, Route, useNavigate } from 'react-router-dom';
 import AdminUserManagement from './admin/AdminUserManagement';
+import AdminReportManagement from './admin/AdminReportManagement';
 // import AdminMentorAdd from './AdminMentorAdd'; // 💡 ඔයා තාම මේ ෆයිල් එක හැදුවේ නැත්නම් මේක මෙහෙම Comment කරලා තියන්න
 
 export default function AdminDashboard() {
@@ -22,12 +23,16 @@ export default function AdminDashboard() {
         
         <nav className="flex-1 p-4 space-y-2">
           {/* මෙතන /admin කියලා ලින්ක් හැදුවා */}
-          <Link to="/admin" className="block px-4 py-2 rounded hover:bg-gray-700 bg-gray-700/50">
+          <Link to="/admin" className="block px-4 py-2 rounded hover:bg-gray-700">
             Dashboard Home
           </Link>
           
           <Link to="/admin/users" className="block px-4 py-2 rounded hover:bg-gray-700">
             User Management
+          </Link>
+
+          <Link to="/admin/reports" className="block px-4 py-2 rounded hover:bg-gray-700">
+            Report Management
           </Link>
 
           
@@ -62,8 +67,14 @@ export default function AdminDashboard() {
 
               {/* /admin/users වලට ආවාම පෙන්වන එක */}
               <Route path="/users" element={
-               <AdminUserManagement />
+               <AdminUserManagement/>
               } />
+
+              {/* All Reports */}
+              <Route path="/reports" element={
+                <AdminReportManagement/>
+              }/>
+
             </Routes>
 
         </main>
