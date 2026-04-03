@@ -26,8 +26,8 @@ const resourceSchema = new mongoose.Schema({
     }, 
     author: { 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: 'User',
-        required: true 
+        ref: 'User'
+        
     } 
 }, { 
     timestamps: true // Of this, the createdAt and the upledAt are automatically made
