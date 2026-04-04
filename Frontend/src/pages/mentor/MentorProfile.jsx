@@ -15,6 +15,7 @@ export default function MentorProfile() {
     expertise: '',
     bio: '',
     experienceYears: '',
+    meetingLink: '',
     linkedinUrl: ''
   });
 
@@ -40,6 +41,7 @@ export default function MentorProfile() {
         expertise: userData.mentorDetails?.expertise || '',
         bio: userData.mentorDetails?.bio || '',
         experienceYears: userData.mentorDetails?.experienceYears || '',
+        meetingLink: userData.mentorDetails?.meetingLink || '',
         linkedinUrl: userData.mentorDetails?.linkedinUrl || ''
       });
     } catch (error) {
@@ -61,6 +63,13 @@ export default function MentorProfile() {
     setSaving(true);
 
     try {
+      const normalizeUrl = (url) => {
+        if (!url) return '';
+        const trimmed = url.trim();
+        if (!trimmed) return '';
+        return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+      };
+
       // The payload structure depends on your backend model. 
       // We send basic info and nest the mentor details.
       const updatePayload = {
@@ -70,7 +79,8 @@ export default function MentorProfile() {
           expertise: formData.expertise,
           bio: formData.bio,
           experienceYears: formData.experienceYears,
-          linkedinUrl: formData.linkedinUrl
+          meetingLink: normalizeUrl(formData.meetingLink),
+          linkedinUrl: normalizeUrl(formData.linkedinUrl)
         }
       };
 
@@ -135,6 +145,16 @@ export default function MentorProfile() {
                   <p className="font-medium text-slate-800">{user?.phone || 'Not provided'}</p>
                 </div>
                 <div>
+                  <p className="text-xs text-slate-500">Personal Meeting Link</p>
+                  {user?.mentorDetails?.meetingLink ? (
+                    <a href={user.mentorDetails.meetingLink} target="_blank" rel="noreferrer" className="text-teal-600 font-medium hover:underline break-all">
+                      {user.mentorDetails.meetingLink}
+                    </a>
+                  ) : (
+                    <p className="font-medium text-slate-800">Not provided</p>
+                  )}
+                </div>
+                <div>
                   <p className="text-xs text-slate-500">LinkedIn Profile</p>
                   {user?.mentorDetails?.linkedinUrl ? (
                     <a href={user.mentorDetails.linkedinUrl} target="_blank" rel="noreferrer" className="text-teal-600 font-medium hover:underline break-all">
@@ -189,7 +209,7 @@ export default function MentorProfile() {
                 <div className="flex flex-col gap-1.5">
                   <label className="text-sm font-bold text-slate-700">Email Address <span className="text-xs text-slate-400 font-normal">(Cannot be changed)</span></label>
                   <input 
-                    type="email" disabled value={user?.email}
+                    type="email" disabled value={user?.email || ''}
                     className="p-2.5 rounded border border-slate-200 bg-slate-100 text-slate-500 cursor-not-allowed outline-none"
                   />
                 </div>
@@ -203,6 +223,16 @@ export default function MentorProfile() {
                   />
                 </div>
                 
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-sm font-bold text-slate-700">Personal Meeting Link</label>
+                  <input
+                    type="url" name="meetingLink" placeholder="https://meet.google.com/abc-defg-hij"
+                    value={formData.meetingLink} onChange={handleChange}
+                    className="p-2.5 rounded border border-slate-300 focus:ring-2 focus:ring-teal-500 outline-none"
+                  />
+                  <p className="text-xs text-slate-500">Paste Google Meet or Zoom link. `https://` is auto-added if missing.</p>
+                </div>
+
                 <div className="flex flex-col gap-1.5">
                   <label className="text-sm font-bold text-slate-700">LinkedIn URL</label>
                   <input 
@@ -260,6 +290,7 @@ export default function MentorProfile() {
                     expertise: user.mentorDetails?.expertise || '',
                     bio: user.mentorDetails?.bio || '',
                     experienceYears: user.mentorDetails?.experienceYears || '',
+                    meetingLink: user.mentorDetails?.meetingLink || '',
                     linkedinUrl: user.mentorDetails?.linkedinUrl || ''
                   });
                 }}

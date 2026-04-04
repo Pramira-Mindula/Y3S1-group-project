@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema({
         bio: { type: String },
         experienceYears: { type: Number },
         linkedinUrl: { type: String },
+        meetingLink: { type: String, default: "" },
         isVerified: { type: Boolean, default: false }
     },
     // Contacting a user (Releaseship)

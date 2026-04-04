@@ -130,3 +130,17 @@ export const bookAvailableSlot = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
+
+// Get all appointments for a logged-in Mentee
+export const getMyBookedSessions = async (req, res) => {
+    try {
+        const sessions = await Appointment.find({ userId: req.user.id })
+            // 👇 This is the magic! It pulls the mentor's name and meeting link into the appointment data
+            .populate('mentorId', 'username mentorDetails.meetingLink')
+            .sort({ date: 1 });
+
+        res.json(sessions);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};

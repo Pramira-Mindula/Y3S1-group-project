@@ -29,7 +29,7 @@ const Login = () => {
         }else if (response.data.user.role === "mentor") {
           navigate("/mentor"); // Redirect to mentor dashboard
         }else{
-          navigate("/findmentor"); // Redirect to user page
+          navigate("/"); // Redirect to user page
         }
       })
       .catch(error => {
