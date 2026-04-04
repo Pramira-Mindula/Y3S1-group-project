@@ -6,6 +6,7 @@ import AdminDashboard from './pages/adminDashboard';
 import Register from './pages/Register';
 import MentorDashboard from './pages/mentor/MentorDashboard';
 import FindMentor from './pages/FindMentor';
+import ResourceLibrary from './pages/ResourceLibrary';
 
 // --- NEW IMPORTS ---
 // Make sure the paths match where you saved these new files!
