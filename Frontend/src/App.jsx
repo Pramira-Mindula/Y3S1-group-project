@@ -5,7 +5,7 @@ import { Toaster } from 'react-hot-toast';
 import AdminDashboard from './pages/adminDashboard';
 import Register from './pages/Register';
 import MentorDashboard from './pages/mentor/MentorDashboard';
-import FindMentor from './pages/FindMentor';
+
 import ResourceLibrary from './pages/ResourceLibrary';
 
 // --- NEW IMPORTS ---
@@ -15,6 +15,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Profile from './pages/Profile';
 import MenteeDashboard from './pages/MenteeDashboard';
+import Aboutus from './pages/Aboutus';
 
 function App() {
   return (
@@ -37,9 +38,10 @@ function App() {
                <Route path="/login" element={<Login />} />
                <Route path="/admin/*" element={<AdminDashboard />} />
                <Route path='/mentor/*' element={<MentorDashboard />} />
-               <Route path='/findmentor' element={<FindMentor />} />
                <Route path='/profile' element={<Profile />} />
                <Route path='/menteedash' element={<MenteeDashboard />} />
+                <Route path='/resources' element={<ResourceLibrary />} />
+                <Route path='/about' element={<Aboutus />} />
           </Routes>
         </main>
         
