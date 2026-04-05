@@ -288,7 +288,7 @@ export default function AboutUs() {
             <div className="au-visual-block">
               <div className="au-visual-main">
                 <img
-                  src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500&q=80"
+                  src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=500&q=80"
                   alt="Empowered women"
                   onError={e => { e.target.style.display = 'none'; }}
                 />
