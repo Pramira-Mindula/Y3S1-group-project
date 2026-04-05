@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useLocation } from 'react-router-dom'
 import './App.css'
 import Login from './pages/Login'
 import { Toaster } from 'react-hot-toast';
@@ -18,6 +18,9 @@ import MenteeDashboard from './pages/MenteeDashboard';
 import Aboutus from './pages/Aboutus';
 
 function App() {
+  const location = useLocation();
+  const showHeaderFooter = !location.pathname.startsWith('/admin') && location.pathname !== '/login' && location.pathname !== '/register';
+
   return (
     <>
       {/* flex-col and min-h-screen push the footer to the bottom */}
@@ -25,7 +28,7 @@ function App() {
         <Toaster/>
         
         {/* 1. Header sits at the top of every page */}
-        <Header/>
+        {showHeaderFooter && <Header/>}
 
         {/* 2. Main content area (flex-grow fills the empty space) */}
         <main className="flex-grow">
@@ -46,7 +49,7 @@ function App() {
         </main>
         
         {/* 3. Footer sits at the bottom of every page */}
-        <Footer/>
+        {showHeaderFooter && <Footer/>}
         
       </div>
     </>
