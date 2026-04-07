@@ -4,6 +4,7 @@ const userSchema = new mongoose.Schema({
     username: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    phone: { type: String },
     
     resetOTP: { type: String },
     resetOTPExpiry: { type: Date },
@@ -16,6 +17,9 @@ const userSchema = new mongoose.Schema({
     mentorDetails: {
         expertise: { type: String }, 
         bio: { type: String },
+        experienceYears: { type: Number },
+        linkedinUrl: { type: String },
+        meetingLink: { type: String, default: "" },
         isVerified: { type: Boolean, default: false }
     },
     // Contacting a user (Releaseship)
