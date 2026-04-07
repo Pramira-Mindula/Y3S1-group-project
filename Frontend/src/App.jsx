@@ -5,6 +5,7 @@ import Login from './pages/Login'
 import { Toaster } from 'react-hot-toast';
 import AdminDashboard from './pages/adminDashboard';
 import Register from './pages/Register';
+import AdminAllPosts from './pages/CommunityPosts/AdminAllPosts'; 
 
 
 
@@ -20,7 +21,7 @@ function App() {
              <Route path='/register' element={<Register />} />
              <Route path="/login" element={<Login />} />
              <Route path="/admin/*" element={<AdminDashboard />} />
-             
+             <Route path="/AdminAllPosts" element={<AdminAllPosts />} />
         </Routes>
         
         
