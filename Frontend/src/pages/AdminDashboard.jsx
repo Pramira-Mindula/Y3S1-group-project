@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import AdminUserManagement from './admin/AdminUserManagement';
+import AdminAllPosts from './CommunityPosts/AdminAllPosts';
+// import AdminMentorAdd from './AdminMentorAdd'; // 💡 ඔයා තාම මේ ෆයිල් එක හැදුවේ නැත්නම් මේක මෙහෙම Comment කරලා තියන්න
 import AdminReportManagement from './admin/AdminReportManagement';
 import AdminResourceManager from './admin/AdminResourceManager';
 

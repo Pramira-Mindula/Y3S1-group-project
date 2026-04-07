@@ -4,6 +4,7 @@ import Login from './pages/Login'
 import { Toaster } from 'react-hot-toast';
 import AdminDashboard from './pages/adminDashboard';
 import Register from './pages/Register';
+import AdminAllPosts from './pages/CommunityPosts/AdminAllPosts'; 
 import MentorDashboard from './pages/mentor/MentorDashboard';
 
 import ResourceLibrary from './pages/ResourceLibrary';
