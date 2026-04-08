@@ -2,9 +2,15 @@ import { Route, Routes, useLocation } from 'react-router-dom'
 import './App.css'
 import Login from './pages/Login'
 import { Toaster } from 'react-hot-toast';
-import AdminDashboard from './pages/adminDashboard';
+import AdminDashboard from './pages/AdminDashboard';
 import Register from './pages/Register';
+import AdminAllPosts from './pages/CommunityPosts/AdminAllPosts'; 
 import MentorDashboard from './pages/mentor/MentorDashboard';
+
+import Community from "./pages/CommunityPosts/pages/Community";
+import SinglePost from "./pages/CommunityPosts/pages/SinglePost";
+import MyPosts from "./pages/CommunityPosts/pages/MyPosts";
+
 
 import ResourceLibrary from './pages/ResourceLibrary';
 
@@ -45,6 +51,10 @@ function App() {
                <Route path='/menteedash' element={<MenteeDashboard />} />
                 <Route path='/resources' element={<ResourceLibrary />} />
                 <Route path='/about' element={<Aboutus />} />
+
+                 <Route path="/community" element={<Community />} />
+                 <Route path="/post/:id" element={<SinglePost />} />
+                 <Route path="/my-posts" element={<MyPosts />} />
           </Routes>
         </main>
         

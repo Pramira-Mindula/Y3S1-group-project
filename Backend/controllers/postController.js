@@ -29,6 +29,27 @@ export const getPosts = async (req, res) => {
     }
 };
 
+//get each post of user
+
+
+
+export const getPostsByUser = async (req, res) => {
+    try {
+        const userId = req.params.userId;
+
+        // Find posts where 'user' equals the given userId
+        const posts = await Post.find({ user: userId }).sort({ createdAt: -1 });
+
+        if (!posts || posts.length === 0) {
+            return res.status(404).json({ message: "No posts found for this user" });
+        }
+
+        res.json(posts);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 //updatePost
 export const updatePost = async (req, res) => {
     try {
