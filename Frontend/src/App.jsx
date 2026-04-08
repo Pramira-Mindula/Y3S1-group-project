@@ -10,6 +10,7 @@ import MentorDashboard from './pages/mentor/MentorDashboard';
 import Community from "./pages/CommunityPosts/pages/Community";
 import SinglePost from "./pages/CommunityPosts/pages/SinglePost";
 import MyPosts from "./pages/CommunityPosts/pages/MyPosts";
+import ChatbotWidget from "./pages/chatbot/ChatbotWidget";
 
 
 import ResourceLibrary from './pages/ResourceLibrary';
@@ -36,6 +37,10 @@ function App() {
         
         {/* 1. Header sits at the top of every page */}
         {showHeaderFooter && <Header/>}
+         <>
+      
+        <ChatbotWidget />
+        </>
 
         {/* 2. Main content area (flex-grow fills the empty space) */}
         <main className="flex-grow">

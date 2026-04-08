@@ -18,6 +18,7 @@ connectDB();
 
 const app = express();
 app.use(cors());
+
 app.use(express.json());
 
 // Member 1: User & Auth
@@ -36,7 +37,7 @@ app.use('/api/news', reportRoutes)
 
 app.use('/api/posts', postRoutes);
 
-app.use('/api/chatbot', chatRoutes);
+app.use('/api/bot-service', chatRoutes);
 
 
 
