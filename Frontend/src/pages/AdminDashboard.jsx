@@ -26,6 +26,7 @@ export default function AdminDashboard() {
     { to: '/admin/users',      label: 'User Management',    icon: '👥' },
     { to: '/admin/reports',    label: 'Report Management',  icon: '📊' },
     { to: '/admin/resources',  label: 'Resource Manager',   icon: '📚' },
+    { to: '/admin/posts',      label: 'Community Posts',    icon: '📝' },
   ];
 
   return (
@@ -175,6 +176,7 @@ export default function AdminDashboard() {
                     { icon: '🤝', label: 'Active Mentors',  value: '1,200', color: '#E1F5EE', text: '#1D9E75' },
                     { icon: '📚', label: 'Resources',       value: '340',   color: '#FAEEDA', text: '#EF9F27' },
                     { icon: '📊', label: 'Reports',         value: '27',    color: '#E6F1FB', text: '#378ADD' },
+                    { icon: '📝', label: 'Community Posts', value: '1,500+', color: '#FDE8E4', text: '#D4537E' }  ,
                   ].map((s) => (
                     <div
                       key={s.label}
@@ -204,6 +206,7 @@ export default function AdminDashboard() {
                     { to: '/admin/users',     icon: '👥', label: 'Manage Users',     sub: 'View and control all accounts' },
                     { to: '/admin/reports',   icon: '📊', label: 'View Reports',      sub: 'Review flagged content' },
                     { to: '/admin/resources', icon: '📚', label: 'Edit Resources',    sub: 'Add or update library items' },
+                    { to: '/admin/posts',     icon: '📝', label: 'Community Posts',   sub: 'Moderate and feature posts' },
                   ].map((q) => (
                     <Link
                       key={q.to}
@@ -225,6 +228,7 @@ export default function AdminDashboard() {
             <Route path="users"     element={<AdminUserManagement />} />
             <Route path="reports"   element={<AdminReportManagement />} />
             <Route path="resources" element={<AdminResourceManager />} />
+            <Route path="posts"     element={<AdminAllPosts />} />
 
           </Routes>
         </main>

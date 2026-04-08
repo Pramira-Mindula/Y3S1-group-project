@@ -267,6 +267,7 @@ export default function Header() {
             <ul className="eh-nav">
               <li><Link to="/" className={isActive('/')}>Home</Link></li>
               <li><Link to="/menteedash" className={isActive('/menteedash')}>Find a Mentor</Link></li>
+              <li><Link to="/Community" className={isActive('/Community')}>Community Forum</Link></li>
               <li><Link to="/about" className={isActive('/about')}>About Us</Link></li>
               <li><Link to="/resources" className={isActive('/resources')}>Resources</Link></li>
             </ul>
