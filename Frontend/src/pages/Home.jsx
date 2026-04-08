@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import NewsSection from '../components/NewsSection';
 
 // Add this to your global CSS or index.css:
 // @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap');
@@ -390,6 +391,59 @@ const styles = `
     line-height: 1.5;
   }
 
+  /* NEWS */
+  .eh-news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
+    margin-top: 2.5rem;
+  }
+  .eh-news-card {
+    background: white;
+    border: 0.5px solid #e8ddd8;
+    border-radius: 16px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s;
+    display: block;
+  }
+  .eh-news-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(29,158,117,0.08);
+    border-color: var(--teal-mid);
+  }
+  .eh-news-image {
+    width: 100%;
+    height: 170px;
+    object-fit: cover;
+    display: block;
+    background: #f5f5f5;
+  }
+  .eh-news-image-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    font-size: 0.85rem;
+  }
+  .eh-news-content {
+    padding: 1rem;
+  }
+  .eh-news-content h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.45rem;
+    color: var(--dark);
+    line-height: 1.4;
+  }
+  .eh-news-content p {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.55;
+    font-weight: 300;
+  }
+
   /* CTA */
   .eh-cta-section {
     background: var(--dark);
@@ -472,6 +526,7 @@ const styles = `
     .eh-features-grid { grid-template-columns: 1fr 1fr; }
     .eh-mentor-cards { grid-template-columns: 1fr; }
     .eh-res-grid { grid-template-columns: 1fr; }
+    .eh-news-grid { grid-template-columns: 1fr 1fr; }
     .eh-stats-strip { gap: 2rem; padding: 2rem 1.5rem; }
     .eh-section { padding: 3rem 1.5rem; }
     .eh-mentors-section { padding: 3rem 1.5rem; }
@@ -483,6 +538,7 @@ const styles = `
     .eh-features-grid { grid-template-columns: 1fr; }
     .eh-hero h1 { font-size: 2.4rem; }
     .eh-section-title { font-size: 1.8rem; }
+    .eh-news-grid { grid-template-columns: 1fr; }
   }
 `;
 
@@ -585,57 +641,8 @@ export default function Home() {
 
         <hr className="eh-divider" />
 
-        {/* ── MENTORS ── */}
-        <div className="eh-mentors-section">
-          <div className="eh-mentors-inner">
-            <div className="eh-mentors-header">
-              <div>
-                <div className="eh-section-label">Our Mentors</div>
-                <div className="eh-section-title" style={{ marginBottom: 0 }}>
-                  Meet the Women<br />Who Light the Way
-                </div>
-              </div>
-              <Link to="/mentors" className="eh-btn-outline">View All Mentors →</Link>
-            </div>
-            <div className="eh-mentor-cards">
-              {[
-                {
-                  img: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=300&q=80',
-                  bg: 'm1', name: 'Dr. Amara Osei',
-                  role: 'CEO & Gender Policy Advisor · Ghana',
-                  tags: [{ label: 'Leadership' }, { label: 'Policy' }, { label: 'Public Speaking', cls: 'teal' }],
-                },
-                {
-                  img: 'https://images.unsplash.com/photo-1607990281513-2c110a25bd8c?w=300&q=80',
-                  bg: 'm2', name: 'Priya Sharma',
-                  role: 'Tech Lead at Google · India',
-                  tags: [{ label: 'STEM Women', cls: 'teal' }, { label: 'Startups' }, { label: 'Finance', cls: 'amber' }],
-                },
-                {
-                  img: 'https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=300&q=80',
-                  bg: 'm3', name: 'Sofia Martinez',
-                  role: 'Human Rights Lawyer · Colombia',
-                  tags: [{ label: 'Legal Rights' }, { label: 'Advocacy', cls: 'amber' }, { label: 'NGO Work' }],
-                },
-              ].map((m) => (
-                <div className="eh-mentor-card" key={m.name}>
-                  <div className={`eh-mentor-img ${m.bg}`}>
-                    <img src={m.img} alt={m.name} />
-                  </div>
-                  <div className="eh-mentor-info">
-                    <div className="eh-mentor-name">{m.name}</div>
-                    <div className="eh-mentor-role">{m.role}</div>
-                    <div className="eh-mentor-tags">
-                      {m.tags.map((t) => (
-                        <span key={t.label} className={`eh-tag${t.cls ? ` ${t.cls}` : ''}`}>{t.label}</span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+         {/* ── NEWS API SECTION ── */}
+        <NewsSection />
 
         {/* ── RESOURCES ── */}
         <div className="eh-section">
@@ -665,6 +672,8 @@ export default function Home() {
             ))}
           </div>
         </div>
+
+       
 
         {/* ── CTA ── */}
         <div className="eh-cta-section">

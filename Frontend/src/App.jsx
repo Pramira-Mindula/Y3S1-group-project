@@ -22,6 +22,7 @@ import Footer from './components/Footer';
 import Profile from './pages/Profile';
 import MenteeDashboard from './pages/MenteeDashboard';
 import Aboutus from './pages/Aboutus';
+import { ReportModalPage } from './pages/ReportModal';
 
 function App() {
   const location = useLocation();
@@ -55,6 +56,8 @@ function App() {
                  <Route path="/community" element={<Community />} />
                  <Route path="/post/:id" element={<SinglePost />} />
                  <Route path="/my-posts" element={<MyPosts />} />
+                 <Route path='/userReport/:postId' element={<ReportModalPage/>} />
+                 
           </Routes>
         </main>
         
