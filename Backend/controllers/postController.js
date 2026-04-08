@@ -1,4 +1,5 @@
 import Post from '../models/Post.js';
+import Report from '../models/Report.js';
 
 // 1. Create Post
 export const createPost = async (req, res) => {
@@ -19,7 +20,10 @@ export const createPost = async (req, res) => {
 // 2. Get All Posts
 export const getPosts = async (req, res) => {
     try {
-        const posts = await Post.find()
+        const resolvedReports = await Report.find({ status: 'Resolved' }).select('postId');
+        const resolvedPostIds = resolvedReports.map((report) => report.postId);
+
+        const posts = await Post.find({ _id: { $nin: resolvedPostIds } })
             .populate('user', 'username role') // Populating user details for each post
             .populate('comments.user', 'username role mentorDetails') // Populating comment authors' details
             .sort({ createdAt: -1 });
@@ -36,9 +40,14 @@ export const getPosts = async (req, res) => {
 export const getPostsByUser = async (req, res) => {
     try {
         const userId = req.params.userId;
+        const resolvedReports = await Report.find({ status: 'Resolved' }).select('postId');
+        const resolvedPostIds = resolvedReports.map((report) => report.postId);
 
         // Find posts where 'user' equals the given userId
-        const posts = await Post.find({ user: userId }).sort({ createdAt: -1 });
+        const posts = await Post.find({
+            user: userId,
+            _id: { $nin: resolvedPostIds }
+        }).sort({ createdAt: -1 });
 
         if (!posts || posts.length === 0) {
             return res.status(404).json({ message: "No posts found for this user" });

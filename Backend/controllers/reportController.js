@@ -1,4 +1,6 @@
 import Report from '../models/Report.js';
+import Post from '../models/Post.js';
+import { BrevoClient } from '@getbrevo/brevo';
 
 //Report a post
 export const createReport = async (req, res) => {
@@ -69,6 +71,14 @@ export const resolveReport = async (req, res) => {
             });
         }
 
+        const existingReport = await Report.findById(req.params.id);
+
+        if (!existingReport) {
+            return res.status(404).json({ message: 'Report not found' });
+        }
+
+        const previousStatus = existingReport.status;
+
         const updatedData = {
             status,
             actionComment,
@@ -84,8 +94,39 @@ export const resolveReport = async (req, res) => {
         .populate('reportedBy', 'username email')
         .populate('actionBy', 'username email');
 
-        if (!report) {
-            return res.status(404).json({ message: 'Report not found' });
+        const becameResolved = previousStatus !== 'Resolved' && report.status === 'Resolved';
+
+        if (becameResolved) {
+            try {
+                const postWithOwner = await Post.findById(report.postId?._id || report.postId)
+                    .populate('user', 'email username');
+
+                const ownerEmail = postWithOwner?.user?.email;
+                const ownerName = postWithOwner?.user?.username || 'User';
+
+                if (ownerEmail && process.env.BREVO_API_KEY) {
+                    const brevo = new BrevoClient({ apiKey: process.env.BREVO_API_KEY });
+                    await brevo.transactionalEmails.sendTransacEmail({
+                        sender: { name: "Safety App", email: "saviduherath2003@gmail.com" },
+                        to: [{ email: ownerEmail }],
+                        subject: "Your community post was removed after report review",
+                        htmlContent: `
+                            <html>
+                                <body style="font-family: Arial, sans-serif;">
+                                    <h3>Hello ${ownerName},</h3>
+                                    <p>Your post titled <b>${report.postId?.title || 'Untitled Post'}</b> was reviewed by the admin team and marked as resolved.</p>
+                                    <p>Because of this, the post is no longer visible in the community feed.</p>
+                                    <p><b>Admin note:</b> ${actionComment}</p>
+                                    <hr />
+                                    <p style="font-size: 12px; color: #64748b;">Safety App moderation notice</p>
+                                </body>
+                            </html>
+                        `
+                    });
+                }
+            } catch (emailError) {
+                console.error('Failed to send resolved-report email:', emailError.message);
+            }
         }
 
         res.json({
