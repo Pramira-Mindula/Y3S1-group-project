@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const styles = `
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap');
@@ -197,6 +197,7 @@ const styles = `
 export default function MenteeDashboard() {
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   const normalizeMeetingUrl = (link) => {
     if (!link || typeof link !== 'string') return '';
@@ -205,13 +206,28 @@ export default function MenteeDashboard() {
     return /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
   };
 
+  // Check if session is ready for call (within 15 minutes before to 15 minutes after)
+  const isCallReady = (sessionDate) => {
+    const now = new Date();
+    const session = new Date(sessionDate);
+    const timeDiff = Math.abs(now - session);
+    const minutesDiff = timeDiff / (1000 * 60);
+    return minutesDiff <= 15; // Ready if within 15 minutes
+  };
+
   const handleJoinCall = (session) => {
-    const meetingLink = normalizeMeetingUrl(session?.mentorId?.mentorDetails?.meetingLink);
-    if (!meetingLink) {
-      toast.error('Mentor has not added a meeting link yet.');
-      return;
+    if (isCallReady(session.date)) {
+      // Use internal video call for P2P video
+      navigate(`/video-call/${session._id}`);
+    } else {
+      // Show legacy meeting link if not yet time for call
+      const meetingLink = normalizeMeetingUrl(session?.mentorId?.mentorDetails?.meetingLink);
+      if (!meetingLink) {
+        toast.error('Call will be available 15 minutes before the session starts');
+        return;
+      }
+      window.open(meetingLink, '_blank', 'noopener,noreferrer');
     }
-    window.open(meetingLink, '_blank', 'noopener,noreferrer');
   };
 
   useEffect(() => { fetchMyBookedSessions(); }, []);

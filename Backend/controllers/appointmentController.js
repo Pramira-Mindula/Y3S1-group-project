@@ -13,7 +13,7 @@ export const createAppointment = async (req, res) => {
                 userId,
                 mentorId: userId,
                 date,
-                reason: reason || 'Mentor availability slot',
+                reason: reason || 'Available for mentoring session',
                 status: 'Available'
             });
 
@@ -23,6 +23,10 @@ export const createAppointment = async (req, res) => {
         const mentor = await User.findById(mentorId);
         if (!mentor || mentor.role !== 'mentor') {
             return res.status(404).json({ message: "Mentor not found" });
+        }
+
+        if (!reason) {
+            return res.status(400).json({ message: "Please provide a reason for the appointment" });
         }
 
         const newAppointment = await Appointment.create({

@@ -1,6 +1,7 @@
 import { Route, Routes, useLocation } from 'react-router-dom'
 import './App.css'
 import Login from './pages/Login'
+import ForgotPassword from './pages/ForgotPassword'
 import { Toaster } from 'react-hot-toast';
 import AdminDashboard from './pages/AdminDashboard';
 import Register from './pages/Register';
@@ -22,12 +23,14 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Profile from './pages/Profile';
 import MenteeDashboard from './pages/MenteeDashboard';
+import FindMentor from './pages/FindMentor';
+import VideoCall from './pages/VideoCall';
 import Aboutus from './pages/Aboutus';
 import { ReportModalPage } from './pages/ReportModal';
 
 function App() {
   const location = useLocation();
-  const showHeaderFooter = !location.pathname.startsWith('/admin') && location.pathname !== '/login' && location.pathname !== '/register';
+  const showHeaderFooter = !location.pathname.startsWith('/admin') && !location.pathname.startsWith('/mentor') && !location.pathname.startsWith('/video-call') && location.pathname !== '/login' && location.pathname !== '/register' && location.pathname !== '/forgot-password';
 
   return (
     <>
@@ -51,10 +54,13 @@ function App() {
                {/* --- Your Existing Routes --- */}
                <Route path='/register' element={<Register />} />
                <Route path="/login" element={<Login />} />
+               <Route path="/forgot-password" element={<ForgotPassword />} />
                <Route path="/admin/*" element={<AdminDashboard />} />
                <Route path='/mentor/*' element={<MentorDashboard />} />
                <Route path='/profile' element={<Profile />} />
                <Route path='/menteedash' element={<MenteeDashboard />} />
+               <Route path='/findmentor' element={<FindMentor />} />    
+                <Route path='/video-call/:sessionId' element={<VideoCall />} />   
                 <Route path='/resources' element={<ResourceLibrary />} />
                 <Route path='/about' element={<Aboutus />} />
 

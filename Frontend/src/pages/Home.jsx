@@ -567,7 +567,7 @@ export default function Home() {
                 development.
               </p>
               <div className="eh-hero-btns">
-                <Link to="/mentors" className="eh-btn-primary">Find a Mentor</Link>
+                <Link to="/menteedash" className="eh-btn-primary">Find a Mentor</Link>
                 <Link to="/register" className="eh-btn-outline">Become a Mentor</Link>
               </div>
             </div>
