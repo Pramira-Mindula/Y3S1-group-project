@@ -317,7 +317,7 @@ const Login = () => {
 
               {/* Forgot Password */}
               <div className="lg-forgot">
-                <a href="#">Forgot Password?</a>
+                <Link to="/forgot-password">Forgot Password?</Link>
               </div>
 
               {/* Submit */}
