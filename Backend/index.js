@@ -17,7 +17,7 @@ dotenv.config();
 connectDB();
 
 const app = express();
-const cors = require("cors");
+
 
 const allowedOrigins = [
   "https://y3-s1-group-project.vercel.app",
