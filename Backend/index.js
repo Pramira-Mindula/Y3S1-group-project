@@ -18,7 +18,7 @@ connectDB();
 
 const app = express();
 app.use(cors({
-  origin: "https://your-new-app-name.vercel.app" 
+  origin: "https://y3-s1-group-project.vercel.app" 
 }));
 
 app.use(express.json());
