@@ -17,10 +17,25 @@ dotenv.config();
 connectDB();
 
 const app = express();
-app.use(cors({
-  origin: "https://y3-s1-group-project.vercel.app",
-  credentials: true
-}));
+const cors = require("cors");
+
+const allowedOrigins = [
+  "https://y3-s1-group-project.vercel.app",
+  "https://y3-s1-group-project-dafhkj2ei-tharindusasa263s-projects.vercel.app"
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 
