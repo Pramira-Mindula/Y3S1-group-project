@@ -18,7 +18,8 @@ connectDB();
 
 const app = express();
 app.use(cors({
-  origin: "https://y3-s1-group-project.vercel.app" 
+  origin: "https://y3-s1-group-project.vercel.app",
+  credentials: true
 }));
 
 app.use(express.json());
