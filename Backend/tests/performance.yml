@@ -1,0 +1,20 @@
+config:
+  target: "http://localhost:5001" # Change to 5000 if that's your port
+  phases:
+    - duration: 60      # Test runs for 1 minute
+      arrivalRate: 5    # 5 new users every second
+      name: "Standard Load"
+  defaults:
+    headers:
+      Content-Type: "application/json"
+
+scenarios:
+  - name: "Browsing Mentors and Attempting Login"
+    flow:
+      - get:
+          url: "/api/auth/mentors" # Testing your mentor listing
+      - post:
+          url: "/api/auth/login"
+          json:
+            email: "test@test.com"
+            password: "password123"
