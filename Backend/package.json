@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "echo \"Error: no test test specified\" && exit 1"
+    "test": "node --experimental-modules --no-warnings node_modules/.bin/jest"
   },
   "keywords": [
     "mern",
@@ -31,7 +31,13 @@
     "openai": "^6.24.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@babel/preset-env": "^7.29.2",
     "@google/generative-ai": "^0.24.1",
-    "nodemon": "^3.1.0"
+    "babel-jest": "^30.3.0",
+    "jest": "^30.3.0",
+    "mongodb-memory-server": "^11.0.1",
+    "nodemon": "^3.1.0",
+    "supertest": "^7.2.2"
   }
 }
