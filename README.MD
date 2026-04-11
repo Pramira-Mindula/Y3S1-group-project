@@ -6,11 +6,11 @@ EmpowerHer is a specialized web ecosystem designed to champion women's growth, s
 
 ## 👥 Group Details (SLIIT - Y3S1)
 
-* **Group ID:** [INSERT YOUR GROUP ID HERE]  
-* **Sasmitha Herath (IT24102791)** - User & Mentor Management, Security, AI Chatbot  
-* **[Member 2 Name] ([ID])** - Community Forum & Moderation Logic  
-* **[Member 3 Name] ([ID])** - Mentorship Booking & Appointment System  
-* **[Member 4 Name] ([ID])** - Resource Management & External API Integrations  
+* **Group ID:** [Group-SE-22-AF]  
+* **[Member 1] ([IT 23765474])** - User Authentication & Mentor Management
+* **[Member 2] ([IT 23538764])** - Community Forum & Gemini API Intergration
+* **[Member 3] ([IT 23631588])** - Resource Management & External API Integrations   
+* **[Member 4] ([IT 23715660])** - Report Management & News API Integrations  
 
 ---
 
