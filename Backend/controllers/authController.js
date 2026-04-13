@@ -48,12 +48,12 @@ export const login = async (req, res) => {
         const { email, password } = req.body;
         const user = await User.findOne({ email });
 
-        // 1. User කෙනෙක් ඉන්නවද සහ Password එක හරිද කියලා මුලින්ම බලනවා
+        // 1. find user and correct password
         if (user && (await bcrypt.compare(password, user.password))) {
             
-            // 2. අලුත් කොටස: User 'mentor' කෙනෙක් නම් විතරක් Verify වෙලාද බලනවා
+            
             if (user.role === 'mentor') {
-                // mentorDetails ඇතුලේ isVerified එක false නම් (හෝ නැත්නම්), ලොගින් එක නවත්තනවා
+                
                 if (!user.mentorDetails?.isVerified) {
                     return res.status(403).json({ 
                         message: "Login failed: Your mentor account is still pending admin approval." 
@@ -61,7 +61,7 @@ export const login = async (req, res) => {
                 }
             }
 
-            // 3. User සාමාන්‍ය කෙනෙක් නම්, හෝ Approve වෙච්ච Mentor කෙනෙක් නම් Token එක හදනවා
+           
             const token = jwt.sign(
                 { id: user._id, role: user.role }, 
                 process.env.JWT_SECRET, 
@@ -74,7 +74,7 @@ export const login = async (req, res) => {
             });
             
         } else {
-            // Email එක හරි Password එක හරි වැරදි නම්
+            
             res.status(401).json({ message: "Invalid credentials" });
         }
     } catch (error) {
