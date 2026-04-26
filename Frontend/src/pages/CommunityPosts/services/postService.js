@@ -4,14 +4,15 @@ const API = axios.create({
   baseURL: `${import.meta.env.VITE_API_URL}/posts`
 });
 
-// Attach token
+// Attach token — stored under 'token' key, separate from the 'user' object
 API.interceptors.request.use((req) => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  if (user?.token) {
-    req.headers.Authorization = `Bearer ${user.token}`;
+  const token = localStorage.getItem("token");
+  if (token) {
+    req.headers.Authorization = `Bearer ${token}`;
   }
   return req;
 });
+
 
 // APIs
 export const getPosts = () => API.get("/");
