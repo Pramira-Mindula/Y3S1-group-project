@@ -207,6 +207,8 @@ const Login = () => {
     axios.post(import.meta.env.VITE_API_URL + '/auth/login', loginData)
       .then(response => {
         localStorage.setItem('token', response.data.token);
+        // Save user object so other pages (e.g. Community) can read the current user's ID
+        localStorage.setItem('user', JSON.stringify(response.data.user));
         toast.success('Welcome back!');
         const role = response.data.user.role;
         if (role === 'admin') navigate('/admin');
