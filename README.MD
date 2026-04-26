@@ -9,8 +9,8 @@ EmpowerHer is a specialized web ecosystem designed to champion women's growth, s
 * **Group ID:** [Group-SE-22-AF]  
 * **[Member 1] ([IT 23765474])** - User Authentication & Mentor Management
 * **[Member 2] ([IT 23538764])** - Community Forum & Gemini API Intergration
-* **[Member 3] ([IT 23631588])** - Resource Management & External API Integrations   
-* **[Member 4] ([IT 23715660])** - Report Management & News API Integrations  
+* **[Member 3] ([IT 23631588])** - Resource Management & External API Integration 
+* **[Member 4] ([IT 23715660])** - Report Management & News API Integration 
 
 ---
 
@@ -35,12 +35,7 @@ cd Backend
 npm install
 
 # 3. Setup Environment Variables (.env inside Backend)
-PORT=5001
-MONGODB_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret_phrase
-GEMINI_API_KEY=your_google_gemini_api_key
-NEWS_API_KEY=your_newsapi_org_key
-BREVO_API_KEY=your_brevo_smtp_key
+
 
 # 4. Setup Frontend
 cd ../Frontend
