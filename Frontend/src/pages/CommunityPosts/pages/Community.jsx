@@ -11,10 +11,6 @@ const Community = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All");
 
-  // Get the logged-in user's ID (same pattern as MyPosts.jsx)
-  const userData = JSON.parse(localStorage.getItem("user"));
-  const currentUserId = userData?.user?._id || userData?._id;
-
   const fetchPosts = async () => {
     try {
       const res = await getPosts();
@@ -74,9 +70,9 @@ const Community = () => {
         {/* ── STATS STRIP ── */}
         <div className="bg-[#2C2C2A] rounded-3xl px-8 py-5 flex gap-10 mb-10 flex-wrap">
           {[
-            { num: posts.length,    desc: "Total Posts"  },
-            { num: totalComments,   desc: "Comments"     },
-            { num: 4,               desc: "Categories"   },
+            { num: posts.length, desc: "Total Posts" },
+            { num: totalComments, desc: "Comments" },
+            { num: 4, desc: "Categories" },
           ].map((s) => (
             <div key={s.desc}>
               <div
@@ -114,11 +110,10 @@ const Community = () => {
               <button
                 key={cat}
                 onClick={() => setCategoryFilter(cat)}
-                className={`text-sm font-medium rounded-full px-4 py-2 border transition-all duration-200 ${
-                  categoryFilter === cat
+                className={`text-sm font-medium rounded-full px-4 py-2 border transition-all duration-200 ${categoryFilter === cat
                     ? "bg-[#D4537E] text-white border-[#D4537E]"
                     : "bg-white text-[#5F5E5A] border-[#c5b8b0] hover:border-[#D4537E] hover:text-[#D4537E]"
-                }`}
+                  }`}
                 style={{ fontFamily: "'DM Sans', sans-serif" }}
               >
                 {cat}
@@ -156,12 +151,7 @@ const Community = () => {
         ) : (
           <div className="grid grid-cols-3 gap-4">
             {filteredPosts.map((post) => (
-              <PostCard
-                key={post._id}
-                post={post}
-                refresh={fetchPosts}
-                isOwner={currentUserId && (post.user?._id || post.user) === currentUserId}
-              />
+              <PostCard key={post._id} post={post} refresh={fetchPosts} />
             ))}
           </div>
         )}
