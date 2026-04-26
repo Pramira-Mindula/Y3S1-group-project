@@ -21,7 +21,9 @@ const app = express();
 
 const allowedOrigins = [
   "https://y3-s1-group-project.vercel.app",
-  "https://y3-s1-group-project-dafhkj2ei-tharindusasa263s-projects.vercel.app"
+  "https://y3-s1-group-project-dafhkj2ei-tharindusasa263s-projects.vercel.app",
+  "http://localhost:5173",
+  "http://localhost:3000"
 ];
 
 app.use(
@@ -48,7 +50,7 @@ app.use('/api/resources', resourceRoutes);
 
 
 // ... member 4 imports
-app.use('/api/safety',reportRoutes);
+app.use('/api/safety', reportRoutes);
 app.use('/api/news', reportRoutes)
 
 //Community-forum

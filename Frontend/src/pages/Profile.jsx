@@ -236,6 +236,25 @@ const styles = `
   }
   .prof-field-value.empty { color: #B4B2A9; font-weight: 300; font-style: italic; }
 
+  /* EDIT MODE */
+  .prof-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--dark);
+    outline: none;
+    padding: 0;
+    margin: 0;
+    font-family: inherit;
+  }
+  .prof-field.editing {
+    border-color: var(--teal-mid);
+    background: var(--white);
+    box-shadow: 0 0 0 2px rgba(93,202,165,0.1);
+  }
+
   /* STATS ROW */
   .prof-stats {
     display: grid;
@@ -342,6 +361,9 @@ const styles = `
 export default function Profile() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editForm, setEditForm] = useState({ username: '', phone: '' });
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => { fetchProfileDetails(); }, []);
 
@@ -356,6 +378,39 @@ export default function Profile() {
       console.error(error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleEditClick = () => {
+    setIsEditing(true);
+    setEditForm({
+      username: user?.username || '',
+      phone: user?.phone || '',
+    });
+  };
+
+  const handleCancelClick = () => {
+    setIsEditing(false);
+  };
+
+  const handleSaveClick = async () => {
+    try {
+      setSaving(true);
+      const response = await axios.put(
+        import.meta.env.VITE_API_URL + '/auth/profile',
+        editForm,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+        }
+      );
+      setUser(response.data.user);
+      setIsEditing(false);
+      toast.success('Profile updated successfully!');
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to update profile.');
+      console.error(error);
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -419,7 +474,16 @@ export default function Profile() {
 
               {/* Edit row */}
               <div className="prof-overlap">
-                <button className="prof-edit-btn">✏️ Edit Profile</button>
+                {!isEditing ? (
+                  <button className="prof-edit-btn" onClick={handleEditClick}>✏️ Edit Profile</button>
+                ) : (
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <button className="prof-edit-btn" onClick={handleCancelClick} disabled={saving} style={{ color: 'var(--muted)', borderColor: '#e8ddd8' }}>Cancel</button>
+                    <button className="prof-edit-btn" onClick={handleSaveClick} disabled={saving} style={{ color: 'white', background: 'var(--teal)', borderColor: 'var(--teal)' }}>
+                      {saving ? 'Saving...' : '💾 Save Changes'}
+                    </button>
+                  </div>
+                )}
               </div>
 
               {/* Stats */}
@@ -443,21 +507,43 @@ export default function Profile() {
               <div className="prof-section-label">Account Information</div>
               <div className="prof-grid">
 
-                <div className="prof-field">
+                <div className={`prof-field ${isEditing ? 'editing' : ''}`}>
                   <div className="prof-field-label"><span className="prof-field-icon">👤</span> Username</div>
-                  <div className="prof-field-value">{user?.username}</div>
+                  {isEditing ? (
+                    <input 
+                      type="text" 
+                      className="prof-input" 
+                      value={editForm.username} 
+                      onChange={(e) => setEditForm(prev => ({ ...prev, username: e.target.value }))} 
+                    />
+                  ) : (
+                    <div className="prof-field-value">{user?.username}</div>
+                  )}
                 </div>
 
                 <div className="prof-field">
                   <div className="prof-field-label"><span className="prof-field-icon">✉️</span> Email Address</div>
-                  <div className="prof-field-value">{user?.email}</div>
+                  <div className="prof-field-value" style={isEditing ? { color: 'var(--muted)' } : {}}>
+                    {user?.email} 
+                    {isEditing && <span style={{fontSize: '0.7rem', fontStyle: 'italic', marginLeft: '8px'}}>(Cannot be changed)</span>}
+                  </div>
                 </div>
 
-                <div className="prof-field">
+                <div className={`prof-field ${isEditing ? 'editing' : ''}`}>
                   <div className="prof-field-label"><span className="prof-field-icon">📞</span> Phone Number</div>
-                  <div className={`prof-field-value${!user?.phone ? ' empty' : ''}`}>
-                    {user?.phone || 'Not provided'}
-                  </div>
+                  {isEditing ? (
+                    <input 
+                      type="text" 
+                      className="prof-input" 
+                      value={editForm.phone} 
+                      onChange={(e) => setEditForm(prev => ({ ...prev, phone: e.target.value }))} 
+                      placeholder="e.g. +1 234 567 8900"
+                    />
+                  ) : (
+                    <div className={`prof-field-value${!user?.phone ? ' empty' : ''}`}>
+                      {user?.phone || 'Not provided'}
+                    </div>
+                  )}
                 </div>
 
                 <div className="prof-field">
