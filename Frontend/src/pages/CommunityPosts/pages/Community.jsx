@@ -11,6 +11,10 @@ const Community = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("All");
 
+  // Get the logged-in user's ID (same pattern as MyPosts.jsx)
+  const userData = JSON.parse(localStorage.getItem("user"));
+  const currentUserId = userData?.user?._id || userData?._id;
+
   const fetchPosts = async () => {
     try {
       const res = await getPosts();
@@ -152,7 +156,12 @@ const Community = () => {
         ) : (
           <div className="grid grid-cols-3 gap-4">
             {filteredPosts.map((post) => (
-              <PostCard key={post._id} post={post} refresh={fetchPosts} />
+              <PostCard
+                key={post._id}
+                post={post}
+                refresh={fetchPosts}
+                isOwner={currentUserId && (post.user?._id || post.user) === currentUserId}
+              />
             ))}
           </div>
         )}
